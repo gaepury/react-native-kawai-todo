@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,23 +7,11 @@ import {
   TextInput,
   Dimensions,
   Platform,
+  ScrollView,
 } from 'react-native';
+import Todo from './components/Todo'
 
-const { height, width } = Dimensions.get("window");
-
-export default class App extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <StatusBar barStyle="light-content"/>
-        <Text style={styles.title}>Kawai To do</Text>
-        <View style={styles.card}>
-          <TextInput style={styles.newTodo} placeholder={"New To Do"}/>
-        </View>
-      </View>
-    );
-  }
-}
+const { height, width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -32,21 +20,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    color: "white",
+    color: 'white',
     fontSize: 30,
     marginTop: 50,
     marginBottom: 30,
-    fontWeight: "400",
+    fontWeight: '400',
   },
   card: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     flex: 1,
-    width: width - 50,
+    width: width - 25,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     ...Platform.select({
       ios: {
-        shadowColor: "rgb(50, 50, 50)",
+        shadowColor: 'rgb(50, 50, 50)',
         shadowOpacity: 0.5,
         shadowRadius: 5,
         shadowOffset: {
@@ -59,7 +47,51 @@ const styles = StyleSheet.create({
       },
     }),
   },
-  newTodo: {
-
-  }
+  input: {
+    padding: 20,
+    borderBottomColor: '#bbb',
+    borderBottomWidth: 1,
+    fontSize: 25,
+  },
+  toDos: {
+    alignItems: 'center'
+  },
 });
+
+class App extends Component {
+  state = {
+    newTodo: '',
+  };
+
+  _controllNewTodo = text => {
+    this.setState({newTodo: text})
+  };
+
+  render() {
+    const { newTodo } = this.state;
+
+    return (
+      <View style={styles.container}>
+        <StatusBar barStyle='light-content'/>
+        <Text style={styles.title}>Kawai To do</Text>
+        <View style={styles.card}>
+          <TextInput
+            style={styles.input}
+            placeholder={'New To Do'}
+            value={newTodo}
+            onChangeText={this._controllNewTodo}
+            placeholderTextColor={"#999"}
+            returnKeyType={"done"}
+            autoCorrect={false}
+          />
+          <ScrollView contentContainerStyle={styles.toDos}>
+            <Todo/>
+          </ScrollView>
+        </View>
+      </View>
+    );
+  }
+}
+
+export default App;
+
