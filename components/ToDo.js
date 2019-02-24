@@ -67,7 +67,6 @@ class ToDo extends Component {
     super(props);
     this.state = {
       isEditing: false,
-      isCompleted: false,
       todoValue: props.text
     };
   }
@@ -75,13 +74,20 @@ class ToDo extends Component {
   static propTypes = {
     text: PropTyeps.string.isRequired,
     isCompleted: PropTyeps.bool.isRequired,
-    delete: PropTyeps.func.isRequired,
+    deleteToDo: PropTyeps.func.isRequired,
+    uncompleteToDo: PropTyeps.func.isRequired,
+    completeToDo: PropTyeps.func.isRequired,
     id: PropTyeps.string.isRequired
   };
 
-
   _toggleComplete = () => {
-    this.setState(prevState => ({isCompleted: !prevState.isCompleted}));
+     const { id, isCompleted, completeToDo, uncompleteToDo } = this.props;
+
+     if (isCompleted) {
+       uncompleteToDo(id);
+     } else {
+       completeToDo(id);
+     }
   };
 
   _startEditing = () => {
@@ -97,8 +103,8 @@ class ToDo extends Component {
   };
 
   render() {
-    const { isEditing, isCompleted, todoValue } = this.state;
-    const { text, id, deleteToDo } = this.props;
+    const { isEditing, todoValue } = this.state;
+    const { text, id, isCompleted, deleteToDo } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.column}>

@@ -72,7 +72,7 @@ class App extends Component {
     this._loadToDos();
   }
 
-  _controllNewTodo = text => {
+  _controllNewToDo = text => {
     this.setState({ newTodo: text });
   };
 
@@ -111,18 +111,51 @@ class App extends Component {
     }
   };
 
-  _deleteToDo = (id) => {
+  _deleteToDo = id => {
     this.setState(prevState => {
       const toDos = prevState.toDos;
       delete toDos[id];
       const newState = {
         ...prevState,
         ...toDos
-      }
+      };
 
       return { ...newState }
     })
+  };
 
+  _uncompleteToDo = id => {
+    this.setState(prevState => {
+      const newState = {
+        ...prevState,
+        toDos: {
+          ...prevState.toDos,
+          [id]: {
+            ...prevState.toDos[id],
+            isCompleted: false,
+          }
+        }
+      };
+
+      return { ...newState }
+    })
+  };
+
+  _completeToDo = id => {
+    this.setState(prevState => {
+      const newState = {
+        ...prevState,
+        toDos: {
+          ...prevState.toDos,
+          [id]: {
+            ...prevState.toDos[id],
+            isCompleted: true,
+          }
+        }
+      };
+
+      return { ...newState }
+    })
   };
 
   render() {
@@ -141,14 +174,21 @@ class App extends Component {
             style={styles.input}
             placeholder={'New To Do'}
             value={newTodo}
-            onChangeText={this._controllNewTodo}
+            onChangeText={this._controllNewToDo}
             placeholderTextColor={'#999'}
             returnKeyType={'done'}
             autoCorrect={false}
             onSubmitEditing={this._addToDoo}
           />
           <ScrollView contentContainerStyle={styles.toDos}>
-            {Object.values(toDos).map(toDo => <ToDo key={toDo.id} {...toDo} deleteToDo={this._deleteToDo} />)}
+            {Object.values(toDos).map(toDo => (
+              <ToDo
+                key={toDo.id}
+                uncompleteToDo={this._uncompleteToDo}
+                completeToDo={this._completeToDo}
+                deleteToDo={this._deleteToDo}
+                {...toDo}/>
+            ))}
           </ScrollView>
         </View>
       </View>
