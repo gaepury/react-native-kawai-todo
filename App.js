@@ -77,8 +77,13 @@ class App extends Component {
     this.setState({ newTodo: text });
   };
 
-  _loadToDos = () => {
-    this.setState({ loadToDos: true });
+  _loadToDos = async () => {
+    try {
+      const toDos = await AsyncStorage.getItem('toDos');
+      this.setState({ loadToDos: true, toDos: JSON.parse(toDos) });
+    } catch(err) {
+      console.log(err)
+    };
   };
 
   _addToDoo = () => {
@@ -203,7 +208,7 @@ class App extends Component {
             onSubmitEditing={this._addToDoo}
           />
           <ScrollView contentContainerStyle={styles.toDos}>
-            {Object.values(toDos).map(toDo => (
+            {Object.values(toDos).reverse().map(toDo => (
               <ToDo
                 key={toDo.id}
                 uncompleteToDo={this._uncompleteToDo}
