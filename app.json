@@ -28,5 +28,7 @@
     "android": {
       "package": "co.gaepury.kawai"
     },
+    "description": "",
+    "githubUrl": "https://github.com/gaepury/react-native-kawai-todo"
   }
 }
