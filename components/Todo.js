@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   input: {
-    marginVertical: 10,
+    marginVertical: 20,
     width: width / 2,
   }
 });
@@ -102,7 +102,7 @@ class Todo extends Component {
           </TouchableOpacity>
           {isEditing ? (
             <TextInput
-              style={[styles.input, styles.text, isCompleted ? styles.completedText : styles.unCompletedText]}
+              style={[styles.text, styles.input, isCompleted ? styles.completedText : styles.unCompletedText]}
               value={todoValue}
               multiline={true}
               onChangeText={this._controlInput}
