@@ -77,6 +77,7 @@ class ToDo extends Component {
     deleteToDo: PropTyeps.func.isRequired,
     uncompleteToDo: PropTyeps.func.isRequired,
     completeToDo: PropTyeps.func.isRequired,
+    updateToDo: PropTyeps.func.isRequired,
     id: PropTyeps.string.isRequired
   };
 
@@ -95,6 +96,9 @@ class ToDo extends Component {
   };
 
   _finishEditing = () => {
+    const { todoValue } = this.state;
+    const { id, updateToDo } = this.props;
+    updateToDo(id, todoValue);
     this.setState({isEditing: false});
   };
 

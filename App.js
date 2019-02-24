@@ -158,6 +158,24 @@ class App extends Component {
     })
   };
 
+  _updateToDo = (id, text) => {
+    console.log(id, text);
+    this.setState(prevState => {
+      const newState = {
+        ...prevState,
+        toDos: {
+          ...prevState.toDos,
+          [id]: {
+            ...prevState.toDos[id],
+            text: text
+          }
+        }
+      };
+
+      return { ...newState }
+    })
+  };
+
   render() {
     const { newTodo, loadToDos, toDos } = this.state;
 
@@ -186,6 +204,7 @@ class App extends Component {
                 key={toDo.id}
                 uncompleteToDo={this._uncompleteToDo}
                 completeToDo={this._completeToDo}
+                updateToDo={this._updateToDo}
                 deleteToDo={this._deleteToDo}
                 {...toDo}/>
             ))}
