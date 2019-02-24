@@ -80,12 +80,12 @@ class App extends Component {
             placeholder={'New To Do'}
             value={newTodo}
             onChangeText={this._controllNewTodo}
-            placeholderTextColor={"#999"}
-            returnKeyType={"done"}
+            placeholderTextColor={'#999'}
+            returnKeyType={'done'}
             autoCorrect={false}
           />
           <ScrollView contentContainerStyle={styles.toDos}>
-            <Todo/>
+            <Todo text={'Hello i`m a to do'}/>
           </ScrollView>
         </View>
       </View>
