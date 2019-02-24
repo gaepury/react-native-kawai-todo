@@ -80,7 +80,7 @@ class App extends Component {
   _loadToDos = async () => {
     try {
       const toDos = await AsyncStorage.getItem('toDos');
-      this.setState({ loadToDos: true, toDos: JSON.parse(toDos) });
+      this.setState({ loadToDos: true, toDos: JSON.parse(toDos) || {}});
     } catch(err) {
       console.log(err)
     };
@@ -206,6 +206,7 @@ class App extends Component {
             returnKeyType={'done'}
             autoCorrect={false}
             onSubmitEditing={this._addToDoo}
+            underlineColorAndroid={'transparent'}
           />
           <ScrollView contentContainerStyle={styles.toDos}>
             {Object.values(toDos).reverse().map(toDo => (
