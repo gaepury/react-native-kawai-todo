@@ -7,7 +7,7 @@ import {
   Dimensions,
   TextInput
 } from 'react-native';
-
+import PropTyeps from 'prop-types';
 const { height, width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
@@ -48,7 +48,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     width: width / 2,
-    justifyContent: 'space-between'
   },
   actions: {
     flexDirection: 'row',
@@ -63,20 +62,30 @@ const styles = StyleSheet.create({
   }
 });
 
-class Todo extends Component {
-  state = {
-    isEditing: false,
-    isCompleted: false,
-    todoValue: ''
+class ToDo extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isEditing: false,
+      isCompleted: false,
+      todoValue: props.text
+    };
+  }
+
+  static propTypes = {
+    text: PropTyeps.string.isRequired,
+    isCompleted: PropTyeps.bool.isRequired,
+    delete: PropTyeps.func.isRequired,
+    id: PropTyeps.string.isRequired
   };
+
 
   _toggleComplete = () => {
     this.setState(prevState => ({isCompleted: !prevState.isCompleted}));
   };
 
   _startEditing = () => {
-    const { text } = this.props;
-    this.setState({isEditing: true, todoValue: text});
+    this.setState({isEditing: true});
   };
 
   _finishEditing = () => {
@@ -84,12 +93,12 @@ class Todo extends Component {
   };
 
   _controlInput = text => {
-    this.setState({ todoValue: text })
+    this.setState({ todoValue: text });
   };
 
   render() {
     const { isEditing, isCompleted, todoValue } = this.state;
-    const { text } = this.props;
+    const { text, id, deleteToDo } = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.column}>
@@ -133,7 +142,7 @@ class Todo extends Component {
                 <Text style={styles.actionText}>✏️</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPressOut={() => deleteToDo(id)}>
               <View style={styles.actionContainer}>
                 <Text style={styles.actionText}>❌</Text>
               </View>
@@ -145,4 +154,4 @@ class Todo extends Component {
   }
 }
 
-export default Todo;
+export default ToDo;

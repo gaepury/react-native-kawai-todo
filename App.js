@@ -9,8 +9,9 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
-import { AppLoading } from 'expo'
-import Todo from './components/Todo'
+import { AppLoading } from 'expo';
+import uuidv1 from 'uuid/v1';
+import ToDo from './components/ToDo';
 
 const { height, width } = Dimensions.get('window');
 
@@ -62,23 +63,70 @@ const styles = StyleSheet.create({
 class App extends Component {
   state = {
     newTodo: '',
-    loadToDos: false
+    loadToDos: false,
+    toDos: {
+    }
   };
 
   componentDidMount() {
-
+    this._loadToDos();
   }
 
   _controllNewTodo = text => {
-    this.setState({ newTodo: text })
+    this.setState({ newTodo: text });
   };
 
   _loadToDos = () => {
-    this.setState({ loadToDos: true })
+    this.setState({ loadToDos: true });
+  };
+
+  _addToDoo = () => {
+    const { newTodo } = this.state;
+
+    if (newTodo !== '') {
+      this.setState(prevState => {
+        const ID = uuidv1();
+        const newToOoObject = {
+          [ID]: {
+            id: ID,
+            isCompleted: false,
+            text: newTodo,
+            createdAt: Date.now()
+          }
+        };
+
+        const newState = {
+          ...prevState,
+          newTodo: '',
+          toDos: {
+            ...prevState.toDos,
+            ...newToOoObject
+          }
+        };
+
+
+
+        return { ...newState }
+      })
+    }
+  };
+
+  _deleteToDo = (id) => {
+    this.setState(prevState => {
+      const toDos = prevState.toDos;
+      delete toDos[id];
+      const newState = {
+        ...prevState,
+        ...toDos
+      }
+
+      return { ...newState }
+    })
+
   };
 
   render() {
-    const { newTodo, loadToDos } = this.state;
+    const { newTodo, loadToDos, toDos } = this.state;
 
     if (!loadToDos) {
       return <AppLoading/>
@@ -97,9 +145,10 @@ class App extends Component {
             placeholderTextColor={'#999'}
             returnKeyType={'done'}
             autoCorrect={false}
+            onSubmitEditing={this._addToDoo}
           />
           <ScrollView contentContainerStyle={styles.toDos}>
-            <Todo text={'Hello i`m a to do'}/>
+            {Object.values(toDos).map(toDo => <ToDo key={toDo.id} {...toDo} deleteToDo={this._deleteToDo} />)}
           </ScrollView>
         </View>
       </View>
