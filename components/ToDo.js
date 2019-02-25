@@ -158,7 +158,7 @@ class ToDo extends Component {
             </TouchableOpacity>
             <TouchableOpacity onPressOut={(event) => {
               event.stopPropagation();
-              deleteToo(id);
+              deleteToDo(id);
             }}>
               <View style={styles.actionContainer}>
                 <Text style={styles.actionText}>❌</Text>
